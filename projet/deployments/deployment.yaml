@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-js-deployments
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+       - name: app-js
+         image: trinklm/app-js
+         env:
+           - name: SENSITIVE_DATA
+             valueFrom:
+               secretKeyRef:
+                 name: sensibles
+                 key: password
+         ports:
+          - containerPort: 3000
